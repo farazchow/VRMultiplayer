@@ -4,8 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
+#include "GameFramework/Actor.h"
 #include "Camera/CameraComponent.h"
 #include "HandControllerBase.h"
+#include "Components/InputComponent.h"
+#include "Components/StaticMeshComponent.h"
+#include "HudWidget.h"
 #include "VRPawn.generated.h"
 
 UCLASS()
@@ -16,12 +20,21 @@ class UDEMY_API AVRPawn : public APawn
 public:
 	// Sets default values for this pawn's properties
 	AVRPawn();
+	
+	//RPC FUNCTIONS
+	UFUNCTION(Server, Reliable)
+	void Server_Move(FVector MDirection, float DeltaTime);
+
+	UFUNCTION(NetMulticast, Reliable)
+	void Multicast_Move(FVector NextLocation);
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
+	
+	virtual void Tick(float DeltaTime) override;
 
 private:
 	void RightTriggerPressed()
@@ -34,12 +47,18 @@ private:
 		if (RightPaintBrushHandController) RightPaintBrushHandController->TriggerReleased();
 	}
 	
-	void Save();
-	void Load();
+	void XMove(float Value);
+	void YMove(float Value);
 
 	//Config
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AHandControllerBase> PaintBrushHandControllerClass;
+
+	UPROPERTY(EditDefaultsOnly)
+	UStaticMeshComponent* SuperMesh;
+	
+	UPROPERTY(EditAnywhere, Category="Movement")
+	float MovementSpeed = 500.0f;
 
 	//Components
 	UPROPERTY(VisibleAnywhere)
@@ -47,8 +66,18 @@ private:
 	
 	UPROPERTY(VisibleAnywhere)
 	UCameraComponent* Camera;
-	
+
 	//References
 	UPROPERTY()
 	AHandControllerBase* RightPaintBrushHandController;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class UUserWidget> WidgetClass;
+
+	UPROPERTY(VisibleInstanceOnly)
+	class UHudWidget* HudWidget;
+
+	FVector MovementDirection;
+	FVector NewDirection;
+	FVector NewLocation;
 };

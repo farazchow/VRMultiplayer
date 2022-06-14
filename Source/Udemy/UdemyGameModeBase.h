@@ -13,5 +13,5 @@ UCLASS()
 class UDEMY_API AUdemyGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
-	
+
 };

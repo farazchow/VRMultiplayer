@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "MotionControllerComponent.h"
+#include "Components/SceneComponent.h"
 #include "HandControllerBase.generated.h"
 
 UCLASS()
@@ -15,14 +16,50 @@ class UDEMY_API AHandControllerBase : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AHandControllerBase();
-
-
 	virtual void TriggerPressed();
 	virtual void TriggerReleased();
 
+
+	//Controller Replication
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_ReplicatedControllerTransform)
+	FTransform ReplicatedControllerTransform;
+
+	UFUNCTION()
+	virtual void OnRep_ReplicatedControllerTransform()
+	{
+		//SetRelativeLocationAndRotation(ReplicatedControllerTransform.Position, ReplicatedControllerTransform.Orientation);
+		SetActorTransform(ReplicatedControllerTransform);
+	}
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated)
+	float ControllerNetUpdateRate;
+
+	float ControllerNetUpdateCount;
+
+	UFUNCTION(Unreliable, Server)
+	void Server_SendControllerTransform(FTransform NewTransform);
+
+	void GetLifetimeReplicatedProps(TArray< class FLifetimeProperty >& OutLifetimeProps) const;
+
+	bool IsServer() const
+	{
+		if (GEngine && GWorld)
+		{
+			if (GEngine->GetNetMode(GWorld) == NM_Client) { return false; }
+			else { return true; }
+		}
+		return false;
+	}
+
+	
 private:
 	//Components
 	UPROPERTY(VisibleAnywhere)
 	UMotionControllerComponent* MotionController;
 
+	bool bIsServer;
+	bool bHasAuthority;
+
+protected:
+	virtual void Tick(float DeltaTime) override;
 };
