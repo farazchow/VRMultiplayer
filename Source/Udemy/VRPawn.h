@@ -70,12 +70,10 @@ private:
 	//References
 	UPROPERTY()
 	AHandControllerBase* RightPaintBrushHandController;
-
+	
 	UPROPERTY(EditAnywhere)
-	TSubclassOf<class UUserWidget> WidgetClass;
-
-	UPROPERTY(VisibleInstanceOnly)
-	class UHudWidget* HudWidget;
+	TSubclassOf<class UUserWidget> HudWidgetRef;
+	
 
 	FVector MovementDirection;
 	FVector NewDirection;

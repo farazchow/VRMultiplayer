@@ -3,6 +3,11 @@
 
 #include "HudWidget.h"
 
+void UHudWidget::NativeConstruct()
+{
+	Super::NativeConstruct();
+}
+
 void UHudWidget::ChangeText(FText text)
 {
 	if (!RoleTextBlock)
@@ -10,4 +15,13 @@ void UHudWidget::ChangeText(FText text)
 		return;
 	}
 	RoleTextBlock->SetText(text);
+}
+
+FText UHudWidget::GetText()
+{
+	if (!RoleTextBlock)
+	{
+		return FText::FromString("Failed");
+	}
+	return RoleTextBlock->GetText();
 }

@@ -59,12 +59,23 @@ void AVRPawn::BeginPlay()
 	{
 		FName role = UEnum::GetValueAsName(GetLocalRole());
 		HudWidget->ChangeText(FText::FromName(role));
-
-		UE_LOG(LogTemp, Warning, TEXT("Should be added to ViewPort"));
+		FString printRole = HudWidget->GetText().ToString();
+		UE_LOG(LogTemp, Warning, TEXT("ROLE: %s"), *printRole);
 
 		HudWidget->AddToViewport();
 	}
 	*/
+	if (HudWidgetRef)
+	{
+		APlayerController* controller = Cast<APlayerController>(APawn::GetController());
+		UUserWidget* widget = CreateWidget(controller, HudWidgetRef);
+		UHudWidget* hud = Cast<UHudWidget>(widget);
+		FName role = UEnum::GetValueAsName(GetLocalRole());
+		hud->ChangeText(FText::FromName(role));
+		hud->AddToViewport(0);
+		UE_LOG(LogTemp, Warning, TEXT("Should be visible"));
+	}
+
 }
 
 

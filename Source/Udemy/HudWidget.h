@@ -16,8 +16,13 @@ class UDEMY_API UHudWidget : public UUserWidget
 	GENERATED_BODY()
 	
 public:
+	virtual void NativeConstruct() override;
+
 	UFUNCTION()
 	void ChangeText(FText text);
+
+	UFUNCTION()
+	FText GetText();
 
 private:
 	UPROPERTY(meta = (BindWidget))
