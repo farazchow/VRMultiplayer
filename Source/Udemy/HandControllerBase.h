@@ -19,7 +19,7 @@ public:
 	virtual void TriggerPressed();
 	virtual void TriggerReleased();
 
-
+	/*
 	//Controller Replication
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_ReplicatedControllerTransform)
 	FTransform ReplicatedControllerTransform;
@@ -27,7 +27,6 @@ public:
 	UFUNCTION()
 	virtual void OnRep_ReplicatedControllerTransform()
 	{
-		//SetRelativeLocationAndRotation(ReplicatedControllerTransform.Position, ReplicatedControllerTransform.Orientation);
 		SetActorTransform(ReplicatedControllerTransform);
 	}
 
@@ -38,6 +37,7 @@ public:
 
 	UFUNCTION(Unreliable, Server)
 	void Server_SendControllerTransform(FTransform NewTransform);
+	*/
 
 	void GetLifetimeReplicatedProps(TArray< class FLifetimeProperty >& OutLifetimeProps) const;
 

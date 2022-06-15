@@ -3,13 +3,17 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
 #include "GameFramework/Pawn.h"
 #include "GameFramework/Actor.h"
+#include "Components/InputComponent.h"
+
 #include "Camera/CameraComponent.h"
 #include "HandControllerBase.h"
-#include "Components/InputComponent.h"
 #include "Components/StaticMeshComponent.h"
+#include "Components/WidgetComponent.h"
 #include "HudWidget.h"
+
 #include "VRPawn.generated.h"
 
 UCLASS()
@@ -27,6 +31,13 @@ public:
 
 	UFUNCTION(NetMulticast, Reliable)
 	void Multicast_Move(FVector NextLocation);
+
+	UFUNCTION(BlueprintCallable)
+	FText GetPlayerRole();
+
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UWidgetComponent* Overhead;
 
 protected:
 	// Called when the game starts or when spawned
@@ -66,6 +77,7 @@ private:
 	
 	UPROPERTY(VisibleAnywhere)
 	UCameraComponent* Camera;
+
 
 	//References
 	UPROPERTY()

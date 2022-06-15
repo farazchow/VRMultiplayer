@@ -16,27 +16,12 @@ AHandControllerBase::AHandControllerBase()
 	MotionController->SetShowDeviceModel(true);
 
 	bReplicates = true;
-
-	ControllerNetUpdateRate = 100.0f;
-	ControllerNetUpdateCount = 0.0f;
-	/*
-	FName role = UEnum::GetValueAsName(GetLocalRole());
-	UE_LOG(LogTemp, Warning, TEXT("Role: %s"), *role.ToString());
-	*/
-	
-
+	AHandControllerBase::SetReplicateMovement(true);
 }
 
 void AHandControllerBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	bIsServer = IsServer();
-
-	if (bHasAuthority)
-	{
-		ReplicatedControllerTransform = GetActorTransform();
-	}
 }
 
 void AHandControllerBase::TriggerPressed() {}
@@ -46,10 +31,11 @@ void AHandControllerBase::TriggerReleased() {}
 void AHandControllerBase::GetLifetimeReplicatedProps(TArray< class FLifetimeProperty >& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-	DOREPLIFETIME_CONDITION(AHandControllerBase, ReplicatedControllerTransform, COND_SkipOwner);
+	//DOREPLIFETIME_CONDITION(AHandControllerBase, ReplicatedMovement, COND_SimulatedOnly);
 
 }
 
+/*
 void AHandControllerBase::Server_SendControllerTransform_Implementation(FTransform NewTransform)
 {
 	// Store new transform and trigger OnRep_Function
@@ -59,3 +45,4 @@ void AHandControllerBase::Server_SendControllerTransform_Implementation(FTransfo
 	if (!bHasAuthority)
 		OnRep_ReplicatedControllerTransform();
 }
+*/

@@ -18,7 +18,7 @@ class UDEMY_API UHudWidget : public UUserWidget
 public:
 	virtual void NativeConstruct() override;
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void ChangeText(FText text);
 
 	UFUNCTION()

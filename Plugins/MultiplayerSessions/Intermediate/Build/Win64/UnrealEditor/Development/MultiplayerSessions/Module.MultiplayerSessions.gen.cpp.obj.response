@@ -1,6 +1,6 @@
-C:\Users\notfa\Desktop\School_Work\Urop\gits\Udemy\Udemy\Plugins\MultiplayerSessions\Intermediate\Build\Win64\UnrealEditor\Development\MultiplayerSessions\Module.MultiplayerSessions.gen.cpp
+C:\Users\immersion\Desktop\FarazC\VRMultiplayer\Plugins\MultiplayerSessions\Intermediate\Build\Win64\UnrealEditor\Development\MultiplayerSessions\Module.MultiplayerSessions.gen.cpp
 /I .
-/I C:\Users\notfa\Desktop\School_Work\Urop\gits\Udemy\Udemy\Plugins\MultiplayerSessions\Source\MultiplayerSessions\Private
+/I C:\Users\immersion\Desktop\FarazC\VRMultiplayer\Plugins\MultiplayerSessions\Source\MultiplayerSessions\Private
 /I ..\Intermediate\Build\Win64\UnrealEditor\Inc\CoreUObject
 /I Runtime
 /I Runtime\CoreUObject\Public
@@ -252,9 +252,9 @@ C:\Users\notfa\Desktop\School_Work\Urop\gits\Udemy\Udemy\Plugins\MultiplayerSess
 /I Runtime\ClothingSystemRuntimeInterface\Public
 /I ..\Intermediate\Build\Win64\UnrealEditor\Inc\AnimationDataController
 /I Developer\AnimationDataController\Public
-/I C:\Users\notfa\Desktop\School_Work\Urop\gits\Udemy\Udemy\Plugins\MultiplayerSessions\Intermediate\Build\Win64\UnrealEditor\Inc\MultiplayerSessions
-/I C:\Users\notfa\Desktop\School_Work\Urop\gits\Udemy\Udemy\Plugins\MultiplayerSessions\Source
-/I C:\Users\notfa\Desktop\School_Work\Urop\gits\Udemy\Udemy\Plugins\MultiplayerSessions\Source\MultiplayerSessions\Public
+/I C:\Users\immersion\Desktop\FarazC\VRMultiplayer\Plugins\MultiplayerSessions\Intermediate\Build\Win64\UnrealEditor\Inc\MultiplayerSessions
+/I C:\Users\immersion\Desktop\FarazC\VRMultiplayer\Plugins\MultiplayerSessions\Source
+/I C:\Users\immersion\Desktop\FarazC\VRMultiplayer\Plugins\MultiplayerSessions\Source\MultiplayerSessions\Public
 /I ..\Plugins\Online\OnlineSubsystem\Intermediate\Build\Win64\UnrealEditor\Inc\OnlineSubsystem
 /I ..\Plugins\Online\OnlineSubsystem
 /I ..\Plugins\Online\OnlineSubsystem\Source
@@ -289,12 +289,12 @@ C:\Users\notfa\Desktop\School_Work\Urop\gits\Udemy\Udemy\Plugins\MultiplayerSess
 /I "C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\shared"
 /I "C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\um"
 /I "C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\winrt"
-/FI"C:\Users\notfa\Desktop\School_Work\Urop\gits\Udemy\Udemy\Intermediate\Build\Win64\UdemyEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h"
-/FI"C:\Users\notfa\Desktop\School_Work\Urop\gits\Udemy\Udemy\Plugins\MultiplayerSessions\Intermediate\Build\Win64\UnrealEditor\Development\MultiplayerSessions\Definitions.MultiplayerSessions.h"
-/Yu"C:\Users\notfa\Desktop\School_Work\Urop\gits\Udemy\Udemy\Intermediate\Build\Win64\UdemyEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h"
-/Fp"C:\Users\notfa\Desktop\School_Work\Urop\gits\Udemy\Udemy\Intermediate\Build\Win64\UdemyEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h.pch"
-/Fo"C:\Users\notfa\Desktop\School_Work\Urop\gits\Udemy\Udemy\Plugins\MultiplayerSessions\Intermediate\Build\Win64\UnrealEditor\Development\MultiplayerSessions\Module.MultiplayerSessions.gen.cpp.obj"
-/sourceDependencies C:\Users\notfa\Desktop\School_Work\Urop\gits\Udemy\Udemy\Plugins\MultiplayerSessions\Intermediate\Build\Win64\UnrealEditor\Development\MultiplayerSessions\Module.MultiplayerSessions.gen.cpp.json
+/FI"C:\Users\immersion\Desktop\FarazC\VRMultiplayer\Intermediate\Build\Win64\UdemyEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h"
+/FI"C:\Users\immersion\Desktop\FarazC\VRMultiplayer\Plugins\MultiplayerSessions\Intermediate\Build\Win64\UnrealEditor\Development\MultiplayerSessions\Definitions.MultiplayerSessions.h"
+/Yu"C:\Users\immersion\Desktop\FarazC\VRMultiplayer\Intermediate\Build\Win64\UdemyEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h"
+/Fp"C:\Users\immersion\Desktop\FarazC\VRMultiplayer\Intermediate\Build\Win64\UdemyEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h.pch"
+/Fo"C:\Users\immersion\Desktop\FarazC\VRMultiplayer\Plugins\MultiplayerSessions\Intermediate\Build\Win64\UnrealEditor\Development\MultiplayerSessions\Module.MultiplayerSessions.gen.cpp.obj"
+/sourceDependencies C:\Users\immersion\Desktop\FarazC\VRMultiplayer\Plugins\MultiplayerSessions\Intermediate\Build\Win64\UnrealEditor\Development\MultiplayerSessions\Module.MultiplayerSessions.gen.cpp.json
 /Zc:inline
 /nologo
 /Oi

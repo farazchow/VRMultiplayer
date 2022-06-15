@@ -28,6 +28,10 @@ AVRPawn::AVRPawn()
 	SuperMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Body"));
 	SuperMesh->SetupAttachment(Camera);
 
+	Overhead = CreateDefaultSubobject<UWidgetComponent>(TEXT("Overhead"));
+	Overhead->SetWidgetClass(HudWidgetRef);
+	Overhead->SetupAttachment(VRRoot);
+
 	bReplicates = true;
 }
 
@@ -39,6 +43,13 @@ void AVRPawn::Tick(float DeltaTime)
 	{
 		Server_Move(MovementDirection, DeltaTime);
 	}
+	if (GEngine)
+	{
+		FName role = UEnum::GetValueAsName(GetLocalRole());
+		FString printText = role.ToString();
+		GEngine->AddOnScreenDebugMessage(2, DeltaTime, FColor::Cyan, printText);
+	}
+
 }
 
 // Called when the game starts or when spawned
@@ -52,30 +63,6 @@ void AVRPawn::BeginPlay()
 		RightPaintBrushHandController->AttachToComponent(GetRootComponent(), FAttachmentTransformRules::SnapToTargetIncludingScale);
 		RightPaintBrushHandController->SetOwner(this);
 	}
-
-	/*
-	HudWidget = Cast<UHudWidget>(CreateWidget(GetWorld(), UHudWidget::StaticClass()));
-	if (HudWidget)
-	{
-		FName role = UEnum::GetValueAsName(GetLocalRole());
-		HudWidget->ChangeText(FText::FromName(role));
-		FString printRole = HudWidget->GetText().ToString();
-		UE_LOG(LogTemp, Warning, TEXT("ROLE: %s"), *printRole);
-
-		HudWidget->AddToViewport();
-	}
-	*/
-	if (HudWidgetRef)
-	{
-		APlayerController* controller = Cast<APlayerController>(APawn::GetController());
-		UUserWidget* widget = CreateWidget(controller, HudWidgetRef);
-		UHudWidget* hud = Cast<UHudWidget>(widget);
-		FName role = UEnum::GetValueAsName(GetLocalRole());
-		hud->ChangeText(FText::FromName(role));
-		hud->AddToViewport(0);
-		UE_LOG(LogTemp, Warning, TEXT("Should be visible"));
-	}
-
 }
 
 
@@ -97,6 +84,18 @@ void AVRPawn::XMove(float Value)
 void AVRPawn::YMove(float Value)
 {
 	MovementDirection.X = FMath::Clamp(Value, -1.0f, 1.0f);
+}
+
+FText AVRPawn::GetPlayerRole()
+{
+	if (HasAuthority()) {
+		FName role = UEnum::GetValueAsName(GetRemoteRole());
+		return FText::FromName(role);
+	}
+	else {
+		FName role = UEnum::GetValueAsName(GetLocalRole());
+		return FText::FromName(role);
+	}
 }
 
 //RPC FUNCTIONS
