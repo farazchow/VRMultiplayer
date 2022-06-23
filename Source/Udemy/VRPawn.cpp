@@ -10,6 +10,7 @@
 #include "Math/Vector.h"
 #include "Math/Rotator.h"
 #include "Blueprint/UserWidget.h"
+#include "UObject/Class.h"
 
 
 
@@ -31,8 +32,9 @@ AVRPawn::AVRPawn()
 	Overhead = CreateDefaultSubobject<UWidgetComponent>(TEXT("Overhead"));
 	Overhead->SetWidgetClass(HudWidgetRef);
 	Overhead->SetupAttachment(VRRoot);
-
+	 
 	bReplicates = true;
+	//IsLocallyControlled();
 }
 
 void AVRPawn::Tick(float DeltaTime)
@@ -41,13 +43,41 @@ void AVRPawn::Tick(float DeltaTime)
 
 	if (!MovementDirection.IsZero())
 	{
-		Server_Move(MovementDirection, DeltaTime);
+		Client_Move(MovementDirection, DeltaTime);
 	}
 	if (GEngine)
 	{
 		FName role = UEnum::GetValueAsName(GetLocalRole());
 		FString printText = role.ToString();
-		GEngine->AddOnScreenDebugMessage(2, DeltaTime, FColor::Cyan, printText);
+		GEngine->AddOnScreenDebugMessage(2, 0.0f, FColor::Cyan, printText);
+
+
+		ENetMode mode = GetNetMode();
+		//FName mode = UEnum::GetValueAsName(GetNetMode());
+		//FString net = mode.ToString();
+		//GEngine->AddOnScreenDebugMessage(1, 0.0f, FColor::Cyan, net);
+		
+		FString net;
+		switch (mode) 
+		{
+		case NM_Standalone:
+			net = "NM_Standalone";
+		case NM_DedicatedServer:
+			net = "NM_DedicatedServer";
+		case NM_ListenServer:
+			net = "NM_ListenServer";
+		case NM_Client:
+			net = "NM_Client";
+		case NM_MAX:
+			net = "NM_Max";
+		default:
+			net = "None of the above";
+		}
+		GEngine->AddOnScreenDebugMessage(1, 0.0f, FColor::Cyan, net);
+		if (mode < NM_Client)
+		{
+			GEngine->AddOnScreenDebugMessage(3, 0.0f, FColor::Silver, "Is a server");
+		}
 	}
 
 }
@@ -99,7 +129,7 @@ FText AVRPawn::GetPlayerRole()
 }
 
 //RPC FUNCTIONS
-void AVRPawn::Server_Move_Implementation(FVector MDirection, float DeltaTime)
+void AVRPawn::Client_Move(FVector MDirection, float DeltaTime)
 {
 	FRotator cameraOffset = Camera->GetForwardVector().Rotation();
 	NewDirection.X = (MDirection.X * FMath::Cos(FMath::DegreesToRadians(cameraOffset.Yaw))) - (MDirection.Y * FMath::Sin(FMath::DegreesToRadians(cameraOffset.Yaw)));
@@ -108,10 +138,15 @@ void AVRPawn::Server_Move_Implementation(FVector MDirection, float DeltaTime)
 	//const FVector NewLocation = GetActorLocation() + (NewDirection * DeltaTime * MovementSpeed);
 	NewLocation = K2_GetActorLocation() + (NewDirection * DeltaTime * 500.0f);
 
-	Multicast_Move(NewLocation);
+	Server_Move(NewLocation);
 }
 
 void AVRPawn::Multicast_Move_Implementation(FVector NextLocation)
 {
 	SetActorLocation(NextLocation);
+}
+
+void AVRPawn::Server_Move_Implementation(FVector NextLocation)
+{
+	Multicast_Move(NextLocation);
 }

@@ -2,7 +2,8 @@
 
 
 #include "HandControllerBase.h"
-#include <Runtime/Engine/Public/Net/UnrealNetwork.h>
+#include "Net/UnrealNetwork.h"
+#include "GameFramework/Pawn.h"
 
 // Sets default values
 AHandControllerBase::AHandControllerBase()
@@ -16,12 +17,27 @@ AHandControllerBase::AHandControllerBase()
 	MotionController->SetShowDeviceModel(true);
 
 	bReplicates = true;
-	AHandControllerBase::SetReplicateMovement(true);
 }
 
 void AHandControllerBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	if (IsLocallyControlled()) 
+	{
+		ReplicatedControllerTransform = MotionController->GetRelativeTransform();
+		Server_SendControllerTransform(ReplicatedControllerTransform);
+	}
+}
+
+void AHandControllerBase::BeginPlay()
+{
+	Super::BeginPlay();
+	SetReplicateMovement(true);
+}
+
+void AHandControllerBase::ChooseTracking(EControllerHand hand)
+{
+	MotionController->SetTrackingSource(hand);
 }
 
 void AHandControllerBase::TriggerPressed() {}
@@ -31,18 +47,19 @@ void AHandControllerBase::TriggerReleased() {}
 void AHandControllerBase::GetLifetimeReplicatedProps(TArray< class FLifetimeProperty >& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-	//DOREPLIFETIME_CONDITION(AHandControllerBase, ReplicatedMovement, COND_SimulatedOnly);
-
+	//DOREPLIFETIME_CONDITION(AHandControllerBase, ReplicatedControllerTransform, COND_SkipOwner);
+	DOREPLIFETIME(AHandControllerBase, ReplicatedControllerTransform);
 }
 
-/*
+
 void AHandControllerBase::Server_SendControllerTransform_Implementation(FTransform NewTransform)
 {
 	// Store new transform and trigger OnRep_Function
 	ReplicatedControllerTransform = NewTransform;
 
 	// Server should no longer call this RPC itself, but if is using non tracked then it will so keeping auth check
-	if (!bHasAuthority)
+	if (!IsLocallyControlled())
+	{
 		OnRep_ReplicatedControllerTransform();
+	}
 }
-*/

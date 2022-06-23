@@ -19,7 +19,7 @@ public:
 	virtual void TriggerPressed();
 	virtual void TriggerReleased();
 
-	/*
+	
 	//Controller Replication
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_ReplicatedControllerTransform)
 	FTransform ReplicatedControllerTransform;
@@ -27,19 +27,32 @@ public:
 	UFUNCTION()
 	virtual void OnRep_ReplicatedControllerTransform()
 	{
-		SetActorTransform(ReplicatedControllerTransform);
+		if (!IsLocallyControlled())
+		{
+			SetActorRelativeTransform(ReplicatedControllerTransform);
+
+		}
 	}
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated)
-	float ControllerNetUpdateRate;
-
-	float ControllerNetUpdateCount;
-
-	UFUNCTION(Unreliable, Server)
+	UFUNCTION(Server, Unreliable)
 	void Server_SendControllerTransform(FTransform NewTransform);
-	*/
+	
 
-	void GetLifetimeReplicatedProps(TArray< class FLifetimeProperty >& OutLifetimeProps) const;
+
+	virtual void GetLifetimeReplicatedProps(TArray< class FLifetimeProperty >& OutLifetimeProps) const override;
+	
+	UFUNCTION()
+	void ChooseTracking(EControllerHand hand);
+
+private:
+	//Components
+	UPROPERTY(VisibleAnywhere)
+	UMotionControllerComponent* MotionController;
+
+	bool bHasAuthority;
+
+protected:
+	virtual void Tick(float DeltaTime) override;
 
 	bool IsServer() const
 	{
@@ -51,15 +64,11 @@ public:
 		return false;
 	}
 
-	
-private:
-	//Components
-	UPROPERTY(VisibleAnywhere)
-	UMotionControllerComponent* MotionController;
+	virtual void BeginPlay() override;
 
-	bool bIsServer;
-	bool bHasAuthority;
-
-protected:
-	virtual void Tick(float DeltaTime) override;
+	bool IsLocallyControlled() const
+	{
+		const AActor* MyOwner = GetOwner();
+		return MyOwner->HasLocalNetOwner();
+	}
 };

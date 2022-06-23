@@ -26,8 +26,11 @@ public:
 	AVRPawn();
 	
 	//RPC FUNCTIONS
+	UFUNCTION()
+	void Client_Move(FVector MDirection, float DeltaTime);
+
 	UFUNCTION(Server, Reliable)
-	void Server_Move(FVector MDirection, float DeltaTime);
+	void Server_Move(FVector NextLocation);
 
 	UFUNCTION(NetMulticast, Reliable)
 	void Multicast_Move(FVector NextLocation);
@@ -35,7 +38,6 @@ public:
 	UFUNCTION(BlueprintCallable)
 	FText GetPlayerRole();
 
-	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UWidgetComponent* Overhead;
 
